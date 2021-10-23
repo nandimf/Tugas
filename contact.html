@@ -80,25 +80,34 @@
           </div>
   
           <div class="col-lg-6">
-            <form>
+            <div class="alert alert-success alert-dismissible fade show d-none my-alert" role="alert">
+              <strong>Terima Kasih!</strong> Pesan anda sudah kami terima.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <form name="contact-form">
               <div class="form-group2">
                 <label for="nama">Nama</label>
-                <input style="background-color: rgb(241,241,241);" type="text" class="form-control" id="nama" >
+                <input style="background-color: rgb(241,241,241);" type="text" placeholder="Your Name" class="form-control" id="nama" name="nama" />
               </div>
               <div class="form-group2">
                 <label for="email">Email</label>
-                <input style="background-color: rgb(241,241,241);" type="text" class="form-control" id="email" >
+                <input style="background-color: rgb(241,241,241);" type="email" placeholder="emailaddress@example.com" class="form-control" id="email" name="email"/>
               </div>
               <div class="form-group2">
                 <label for="telp">No Telepon</label>
-                <input style="background-color: rgb(241,241,241);" type="text" class="form-control" id="telp" >
+                <input style="background-color: rgb(241,241,241);" type="tel" placeholder="Your Number" minlength="9" maxlength="14" class="form-control" id="telp" name="no telepon"/>
               </div>
               <div class="form-group2">
                 <label for="pesan">Pesan</label>
-                <textarea style="background-color: rgb(241,241,241);" name="pesan" class="form-control" id="pesan"></textarea>
+                <textarea style="background-color: rgb(241,241,241);" name="pesan" placeholder="Your Message" class="form-control" id="pesan" name="pesan"/></textarea>
               </div>
               <div class="form-group pt-2">
-                <button style="background-color: #405982; border:none;" type="button" class="btn btn-primary justify-content-center">Kirim Pesan</button>
+                <button style="background-color: #405982; border:none;" type="submit" class="btn btn-primary btn-kirim justify-content-center">Kirim</button>
+                <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </button>
               </div>
             </form>
           </div>
@@ -203,5 +212,34 @@
  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script> -->
  <!-- css -->
  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> -->
+
+ <script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxbTcvqiqdebot4n29K7dcNYeAXJpihqOiigwAmPr1FEg4cWpEsFNPixFZcybYCMzi4lg/exec';
+  const form = document.forms['contact-form']
+  const btnKirim = document.querySelector('.btn-kirim');
+  const btnLoading = document.querySelector('.btn-loading');
+  const myAlert = document.querySelector('.my-alert');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    // Ketika Tombol submit di klik
+    // Tampilkan Tombol Loading, hilangkan tombil kirim
+    btnLoading.classList.toggle('d-none');
+    btnKirim.classList.toggle('d-none');
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+        // Tampilkan Tombol Kirim, hilangkan tombil Loading
+        btnLoading.classList.toggle('d-none');
+    btnKirim.classList.toggle('d-none');
+    // Tampilkan Alert
+    myAlert.classList.toggle('d-none');
+    // reset form-nya
+    form.reset();
+        console.log('Success!', response)
+      })
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
+
 </body>
 </html>

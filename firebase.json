@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "ProfileCompany-master",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
